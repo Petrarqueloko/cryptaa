@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Subscriptions</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 15px;
+        }
+        .table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title text-center">Mes Abonnements</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead class="bg-secondary">
+                        <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col"> Type d'Abonnement</th>
+                            <th scope="col"> Date de début</th>
+                            <th scope="col"> Date d'expiration</th>
+                            <th scope="col"> Statut de l'Abonnement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for abonnement in abonnements %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ abonnement.type_abonnement }}</td>
+                            <td>{{ abonnement.date_debut }}</td>
+                            <td>{{ abonnement.date_expiration }}</td>
+                            <td>{{ abonnement.status }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url "subscribe" %}" class="btn btn-info">Effectuer un nouvel abonnement</a>
+            </div>
+        </div>
+    </div>
+    {% include "footer.html" %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>

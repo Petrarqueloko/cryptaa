@@ -1,0 +1,21 @@
+D'abord, je voudrais que les templates html soient stylés avec bu bootstrap;
+je veux des pages attractives digne du nom ;
+Maintenant, sur la page de description de l'Abonnement, lorsque l'utilisateur clique sur le bouton
+S'aboner, il est redirigé vers la page contenant le formulaire;
+le formulaire sera composé des champs: username, email, Date de début, et Date d'expiration; 
+Tous ces champs seront pré-remplis; L'utilisateur n'aura le droit de modifier aucun des champs; 
+Si le récent Abonnement de l'utilisateur est toujours valable, le champs Date de début est pré-rempli avec la date d'expiration du récent Abonnement;
+Si le récent Abonnement de l'utilisateur est déjà expiré, alors le champs Date de Début est pré-rempli avec la date du jour;
+Dans tous les cas, le champs date d'expiration est calculé en ajoutant 1 mois à la date de début; 
+En bas du formulaire, il y aura un seul bouton, le bouton de paiement de kkiapay; 
+    <kkiapay-widget amount="100" 
+        key="bb28313016e511efba8bd909f250d97f"
+        position="center"
+        sandbox="true"
+        data=""
+        callback="https://kkiapay-redirect.com" >
+    </kkiapay-widget>
+    <script src="https://cdn.kkiapay.me/k.js"></script>
+
+Une fois cliqué sur ce bouton, le processus de paiement de kkiapay sera lancé;
+Si le paiement est effectué avec succès alors, les Informations pré-remplis dans les champs au dessus, sont enrégistrées dans la table Abonnement

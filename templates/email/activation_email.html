@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation de compte</title>
+</head>
+<body>
+    <p>
+        Cher {{ user.username }},
+    </p>
+    <p>
+        Veuillez cliquer sur le lien ci-dessous pour activer votre compte :
+    </p>
+    <p>
+        <a href="{{ activation_url }}">Activer mon compte</a>
+    </p>
+    <p>
+        Si vous n'avez pas demandé à créer un compte sur notre site, ignorez simplement cet e-mail.
+    </p>
+    <p>
+        Cordialement,
+        L'équipe de CryptA
+    </p>
+</body>
+</html>

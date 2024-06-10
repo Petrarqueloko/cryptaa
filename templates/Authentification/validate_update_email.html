@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validate Update</title>
+</head>
+<body>
+    <p>Bonjour {{ user.username }},</p>
+    <p>Veuillez cliquer sur le lien ci-dessous pour valider la mise à jour de vos informations personnelles :</p>
+    <a href="http://{{ domain }}{% url 'validate_update' uidb64=uid token=token %}">Valider les modifications</a>
+    <p>Ce lien est valable pendant 10 minutes.</p>
+</body>
+</html>

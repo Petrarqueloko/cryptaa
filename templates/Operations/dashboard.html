@@ -1,0 +1,110 @@
+<!-- dashboard/templates/dashboard/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh; /* Ensure the body takes the full height of the viewport */
+            margin: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            height: 100vh; /* Make sidebar take full height */
+            position: fixed; /* Fix sidebar to the left */
+        }
+        .content {
+            flex-grow: 1;
+            padding: 15px;
+            margin-left: 250px; /* Offset the content by the width of the sidebar */
+            width: calc(100% - 250px); /* Ensure the content does not overlap with sidebar */
+        }
+        .nav .submenu {
+            display: none;
+            list-style-type: none;
+            padding-left: 15px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .menu-item .arrow {
+            margin-right: 5px;
+            transition: transform 0.3s;
+        }
+        .menu-item .arrow.down {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar bg-primary">
+        <h2>Menu</h2>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <div class="menu-item" onclick="toggleSubmenu('menu1-submenu')">
+                    <span class="arrow">&gt;</span>
+                    <a class="nav-link text-dark" href="javascript:void(0);">Abonnements</a>
+                </div>
+                <ul id="menu1-submenu" class="submenu">
+                    <li class="nav-item"><a class="nav-link text-dark" href="{% url "subscribe" %}">S'abonner</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="{% url "subscription_list" %}">Voir mes Abonnements</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <div class="menu-item" onclick="toggleSubmenu('menu2-submenu')">
+                    <span class="arrow">&gt;</span>
+                    <a class="nav-link text-dark" href="javascript:void(0);">Chiffrement</a>
+                </div>
+                <ul id="menu2-submenu" class="submenu">
+                    <li class="nav-item"><a class="nav-link text-dark" href="{% url "encrypt_file" %}">Chiffrement de fichiers </a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="">Chiffrement de dossiers</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <div class="menu-item" onclick="toggleSubmenu('menu3-submenu')">
+                    <span class="arrow">&gt;</span>
+                    <a class="nav-link text-dark" href="javascript:void(0);">Déchiffrement</a>
+                </div>
+                <ul id="menu3-submenu" class="submenu">
+                    <li class="nav-item"><a class="nav-link text-dark" href="">Déchiffrement de fichiers</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="">Déchiffrement de dossiers</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <div class="menu-item" onclick="toggleSubmenu('menu4-submenu')">
+                    <span class="arrow">&gt;</span>
+                    <a class="nav-link text-dark" href="javascript:void(0);">Stéganographie par les images</a>
+                </div>
+                <ul id="menu4-submenu" class="submenu">
+                    <li class="nav-item"><a class="nav-link text-dark" href="">Insertion dans une image</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="">Extraction depuis une image</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script>
+        function toggleSubmenu(submenuId) {
+            var submenu = document.getElementById(submenuId);
+            var arrow = submenu.previousElementSibling.querySelector('.arrow');
+            if (submenu.style.display === "none" || submenu.style.display === "") {
+                submenu.style.display = "block";
+                arrow.classList.add('down');
+            } else {
+                submenu.style.display = "none";
+                arrow.classList.remove('down');
+            }
+        }
+    </script>
+</body>
+</html>
+

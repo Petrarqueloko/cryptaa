@@ -1,0 +1,10 @@
+<!-- acc_active_email.html -->
+<!DOCTYPE html>
+<html>
+    <body>
+        <p>Hi {{ user.username }},</p>
+        <p>Please click on the link below to confirm your email address and complete the update:</p>
+        <p><a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">Activate</a></p>
+        <p>Thank you!</p>
+    </body>
+</html>

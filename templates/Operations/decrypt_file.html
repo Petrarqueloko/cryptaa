@@ -1,0 +1,41 @@
+<!-- templates/decrypt_file.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decrypt File</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Decrypt File</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Déchiffrer</button>
+        </form>
+        <div id="progress-bar" style="display: none;">
+            <p>Progression...</p>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('progress-bar').style.display = 'block';
+            var progressBar = document.querySelector('.progress-bar');
+            var width = 0;
+            var interval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    progressBar.innerHTML = 'Complété';
+                } else {
+                    width += 10;
+                    progressBar.style.width = width + '%';
+                    progressBar.innerHTML = width + '%';
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>

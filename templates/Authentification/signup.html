@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
+      rel="stylesheet"
+    />
+    <title>inscription</title>
+  </head>
+  <body>
+
+    {% include "header.html" %}
+    <section class="vh-100" style="background-color: #eee; margin-top: 100px">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px">
+              <div class="card-body p-md-5">
+                <div class="row justify-content-center">
+                  <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                      Sign up
+                    </p>
+
+                    
+                    
+
+                <form class="mx-1 mx-md-4" action="{% url 'signup' %}" method="POST">
+                    {% csrf_token %}
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input
+                            type="text"
+                            id="username"
+                            class="form-control"
+                            name="username"
+                            required
+                          />
+                          <label class="form-label" for="username"
+                            >Your username</label>
+                            <small class="text-danger error-msg" id="username-error-msg"></small>
+                        </div>
+                        
+                      </div>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input
+                            type="text"
+                            id="first_name"
+                            class="form-control"
+                            name="first_name"
+                            required
+                          />
+                          <label class="form-label" for="first_name"
+                            >Your first_name</label
+                          >
+                        <small class="text-danger error-msg" id="first-name-error-msg"></small>
+                        </div>
+                
+                      </div>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input
+                            type="text"
+                            id="last_name"
+                            class="form-control"
+                            name="last_name"
+                            required
+                          />
+                          <label class="form-label" for="last_name"
+                            >Your last_name</label
+                          >
+                            <small class="text-danger error-msg" id="last-name-error-msg"></small>
+                        </div>
+                        
+                      </div>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input
+                            type="text"
+                            id="email"
+                            class="form-control"
+                            name="email"
+                            required
+                          />
+                          <label class="form-label" for="email"
+                            >Your Email</label
+                          >
+                            <small class="text-danger error-msg" id="email-error-msg"></small>
+                        </div>
+                    
+                      </div>
+
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            name="password"
+                            required
+                          />
+                          <label class="form-label" for="password"
+                            >Password</label
+                          >
+                        <small class="text-danger error-msg" id="password-error-msg"></small>
+                        </div>
+                        
+                      </div>
+
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input
+                            type="password"
+                            id="repassword"
+                            class="form-control"
+                            name="repassword"
+                            required
+                          />
+                          <label class="form-label" for="repassword"
+                            >Repeat your password</label
+                          >
+                        <small class="text-danger error-msg" id="repassword-error-msg"></small>
+                        </div>
+                        
+                      </div>
+                      <script
+                      type="text/javascript"
+                      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
+                    ></script>
+                      <div
+                        class="form-check d-flex justify-content-center mb-5"
+                      >
+                        <input
+                          class="form-check-input me-2"
+                          type="checkbox"
+                          value=""
+                          id="form2Example3c"
+                        />
+                        <label class="form-check-label" for="form2Example3">
+                          I agree all statements in
+                          <a href="#!">Terms of service</a>
+                        </label>
+                      </div>
+
+                      <div
+                        class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
+                      >
+                        <button type="submit" class="btn btn-primary btn-lg" >
+                          Register
+                        </button>
+                      </div>
+                </form>
+                  </div>
+                  <div
+                    class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2"
+                  >
+                    <img
+                      src="{% static 'images/acc3.jpg' %}"
+                      class="img-fluid"
+                      alt="Sample image"
+                      style="height: 400px;"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    in
+    <!-- MDB -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('form').addEventListener('submit', function(event) {
+        // Récupérer les valeurs des champs du formulaire
+        const usernameField = document.getElementById('username');
+        const firstNameField = document.getElementById('first_name');
+        const lastNameField = document.getElementById('last_name');
+        const emailField = document.getElementById('email');
+        const passwordField = document.getElementById('password');
+        const repasswordField = document.getElementById('repassword');
+
+        // Récupérer les messages d'erreur associés à chaque champ
+        const usernameErrorMsg = document.getElementById('username-error-msg');
+        const firstNameErrorMsg = document.getElementById('first-name-error-msg');
+        const lastNameErrorMsg = document.getElementById('last-name-error-msg');
+        const emailErrorMsg = document.getElementById('email-error-msg');
+        const passwordErrorMsg = document.getElementById('password-error-msg');
+        const repasswordErrorMsg = document.getElementById('repassword-error-msg');
+
+        // Expression régulière pour vérifier les noms (uniquement lettres, apostrophe et accents)
+        const nameRegex = /^[a-zA-Z'àâäçéèêëîïôöùûüÿ\s'-]+$/;
+
+        // Expression régulière pour vérifier le format d'une adresse email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Vérifier le champ username
+        if (usernameField.value.trim() === '') {
+            event.preventDefault();
+            usernameErrorMsg.textContent = 'Please enter your username';
+        } else {
+            usernameErrorMsg.textContent = '';
+        }
+
+        // Vérifier le champ first name
+        if (!nameRegex.test(firstNameField.value.trim())) {
+            event.preventDefault();
+            firstNameErrorMsg.textContent = 'Please enter a valid first name';
+        } else {
+            firstNameErrorMsg.textContent = '';
+        }
+
+        // Vérifier le champ last name
+        if (!nameRegex.test(lastNameField.value.trim())) {
+            event.preventDefault();
+            lastNameErrorMsg.textContent = 'Please enter a valid username';
+        } else {
+            lastNameErrorMsg.textContent = '';
+        }
+
+        if (!nameRegex.test(usernameField.value.trim())) {
+            event.preventDefault();
+            usernameErrorMsg.textContent = 'Please enter a valid last name';
+        } else {
+            usernameErrorMsg.textContent = '';
+        }
+
+        // Vérifier le champ email
+        if (!emailRegex.test(emailField.value.trim())) {
+            event.preventDefault();
+            emailErrorMsg.textContent = 'Please enter a valid email address';
+        } else {
+            emailErrorMsg.textContent = '';
+        }
+
+        // Vérifier le champ password
+        if (passwordField.value.trim().length < 8) {
+            event.preventDefault();
+            passwordErrorMsg.textContent = 'Password must be at least 8 characters long';
+        } else if (passwordField.value !== repasswordField.value) {
+            event.preventDefault();
+            passwordErrorMsg.textContent = 'Passwords do not match';
+        } else {
+            passwordErrorMsg.textContent = '';
+            repasswordErrorMsg.textContent = '';
+        }
+    });
+});
+
+    </script>
+
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
+  
+    ></script>
+     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+
+
+
+

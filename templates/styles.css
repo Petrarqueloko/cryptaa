@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Application de Cryptage</title>
+    <!-- Liens vers Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Feuille de style personnalisée -->
+    <link href="styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Barre de navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Votre Application</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#fonctionnalites">Fonctionnalités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#apropos">À Propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="display-4">Protégez vos données sensibles</h1>
+                <p class="lead">Notre application offre une solution complète et sécurisée pour crypter vos fichiers et partager des données en toute confidentialité.</p>
+                <p>Grâce à des fonctionnalités avancées et une interface conviviale, vous pouvez gérer vos données sensibles en toute confiance.</p>
+                <a href="#" class="btn btn-primary btn-lg">Inscrivez-vous maintenant</a>
+            </div>
+            <div class="col-md-6">
+                <!-- Insérer des captures d'écran ici -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Fonctionnalités -->
+    <section id="fonctionnalites" class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Fonctionnalités Principales</h2>
+                    <ul>
+                        <li>Cryptage Robuste</li>
+                        <li>Partage Sécurisé</li>
+                        <li>Gestion de Profil</li>
+                        <li>Mises à Jour Automatiques</li>
+                        <li>Assistance 24/7</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <!-- Insérer des icônes ou des images représentatives ici -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- À Propos -->
+    <section id="apropos" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>À Propos de Notre Entreprise</h2>
+                    <p>Notre entreprise s'engage à fournir des solutions innovantes pour répondre aux besoins de sécurité de nos utilisateurs. Forts d'une expertise technique solide et d'une passion pour la protection des données, nous travaillons sans relâche pour offrir une expérience utilisateur exceptionnelle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Contactez-nous</h2>
+                    <p>Besoin d'aide ou avez-vous des questions ? Contactez-nous à l'adresse contact@votreentreprise.com ou appelez-nous au +XX XXX XXX XXXX.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 Votre Application. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Liens vers Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
+Super; le cryptage marche bien et le fichier est sauvegardé à l'emplacement spécifié par l'utilisateur; Maintenant, pour un utilisateur qui n'a pas de connaissances techniques, il lui sera difficile d'entrer le chemin du répertoire de destination; Maintenant j'ai deux options à te proposer: 
+Premier cas: Je voudrais qu'il y ait un seul champ, celui pour choisir le fichier à crypter; dans ce cas le champ prend également en compte le répertoire du fichier source; Cela dit le répertoire du fichier source est en même temps le répertoire de destination; 
+Deuxième cas: il y aura deux champ; un champ pour choisir le fichier et un deuxième champ pour choisir le répertoire de destination; le deuxième champ doit ouvrir le répertoire de la machine et permettre à l'utilisateur de sélectioner le répertoire de destination;
+Parmi les deux cas que j'ai présentés, lequel est mieux ?    

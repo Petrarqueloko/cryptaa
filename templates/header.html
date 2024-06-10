@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="containe">
+      <a class="navbar-brand" href="{% url "home" %}">CryptAS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url "home" %}">Accueil</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Fonctionnalités
+            </a>
+            <div class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Téléchargement de l'application Desktop</a>
+              <a class="dropdown-item" href="#">Stockage dans le cloud et partage de fichiers</a>
+              <a class="dropdown-item" href="{% url "subscription_offer" %}">Abonnement</a>
+              <a class="dropdown-item" href="#">Ajout de contacts</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Documentation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">À Propos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "dashboard" %}">Dashboard</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Blog
+            </a>
+            <div class="dropdown-menu bg-primary"" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Articles récents</a>
+              <a class="dropdown-item" href="#">Guides et tutoriels</a>
+              <a class="dropdown-item" href="#">Astuces de sécurité</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Connexion
+            </a>
+            <div class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url "sign_in" %}">Se Connecter</a>
+              <a class="dropdown-item" href="{% url "signup" %}">Créer un compte</a>
+              <a class="dropdown-item" href="{% url "profile" %}">Profil</a>
+              <a class="dropdown-item" href="{% url "password_reset" %}">Réinitialiser mon mot de passe</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

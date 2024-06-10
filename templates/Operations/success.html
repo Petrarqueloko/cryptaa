@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Operation Successful</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Opération réussie</h2>
+        <p>Le fichier {{ filename }} a été traité avec succès.</p>
+        <a href="{% url 'encrypt_file' %}" class="btn btn-primary">Crypter un autre fichier</a>
+        <a href="{% url 'decrypt_file' %}" class="btn btn-primary">Déchiffrer un fichier</a>
+    </div>
+</body>
+</html>

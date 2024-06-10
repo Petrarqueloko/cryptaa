@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre Application</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+ 
+  <!-- Menu -->
+  {% include "header.html" %}
+<!-- Contenu de la page -->
+  <div class="container" style="margin-top: 130px;">
+        <!-- Contenu principal -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="display-4">Protégez vos données sensibles</h1>
+                <p class="lead">Notre application offre une solution complète et sécurisée pour crypter vos fichiers et partager des données en toute confidentialité.</p>
+                <p>Grâce à des fonctionnalités avancées et une interface conviviale, vous pouvez gérer vos données sensibles en toute confiance.</p>
+                <a href="#" class="btn btn-primary btn-lg">Inscrivez-vous maintenant</a>
+            </div>
+            <div class="col-md-6">
+                <!-- Insérer des captures d'écran ici -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img class="d-block w-100" src="{% static 'images/acc1.jpg' %}" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="{% static 'images/acc2.jpg' %}" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="{% static 'images/acc3.jpg' %}" alt="Third slide">
+                    </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Fonctionnalités -->
+    <section id="fonctionnalites" class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Fonctionnalités Principales</h2>
+                    <ul>
+                        <li><strong> Cryptage Robuste: </strong> Protégez vos fichiers avec des algorithmes de cryptage puissants pour garantir leur confidentialité.</li>
+                        <li>Partage Sécurisé: : Partagez des fichiers cryptés avec des contacts autorisés via une plateforme sécurisée.</li>
+                        <li>Gestion de Profil: Personnalisez votre profil et gérez vos paramètres de sécurité en toute simplicité.</li>
+                        <li>Mises à Jour Automatiques:  Bénéficiez des dernières améliorations et des correctifs de sécurité grâce à des mises à jour automatiques.</li>
+                        <li>Assistance 24/7: Notre équipe d'assistance est disponible 24 heures sur 24, 7 jours sur 7, pour répondre à vos questions et vous aider en cas de besoin.</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <!-- Insérer des icônes ou des images représentatives ici -->
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="{% static 'images/acc4.jpg' %}" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="{% static 'images/acc5.jpg' %}" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="{% static 'images/acc6.jpg' %}" alt="Third slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- À Propos -->
+    <section id="apropos" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>À Propos de Notre Entreprise</h2>
+                    <p>Notre entreprise s'engage à fournir des solutions innovantes pour répondre aux besoins de sécurité de nos utilisateurs. Forts d'une expertise technique solide et d'une passion pour la protection des données, nous travaillons sans relâche pour offrir une expérience utilisateur exceptionnelle.</p>
+                </div>
+                <div class="col-md-6">
+                <!-- Insérer des captures d'écran ici -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img class="d-block w-100" src="{% static 'images/acc7.jpg' %}" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="{% static 'images/acc8.jpg' %}" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="{% static 'images/acc9.jpg' %}" alt="Third slide">
+                    </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+                
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Contactez-nous</h2>
+                    <p>Besoin d'aide ou avez-vous des questions ? Contactez-nous à l'adresse contact@votreentreprise.com ou appelez-nous au +XX XXX XXX XXXX.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+  </div>
+
+<!-- Pied de page -->
+  {% include "footer.html" %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
