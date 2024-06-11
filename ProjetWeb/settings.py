@@ -8,12 +8,12 @@ load_dotenv()
 # Définir BASE_DIR en utilisant pathlib.Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Media files (Uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

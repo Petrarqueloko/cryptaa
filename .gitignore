@@ -16,11 +16,7 @@ venv/
 *.db
 *.sqlite3
 
-# Media
-media/
 
-# Static files
-staticfiles/
 
 # MacOS
 .DS_Store
