@@ -5,16 +5,17 @@ import dj_database_url
 
 load_dotenv()
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Définir BASE_DIR en utilisant pathlib.Path
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / 'static',
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Secret Key
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
@@ -41,14 +42,17 @@ INSTALLED_APPS = [
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ajoutez Whitenoise middleware ici
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 ROOT_URLCONF = 'ProjetWeb.urls'
 
@@ -75,10 +79,9 @@ DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
-
 # Email configuration
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey' # This is exactly the value 'apikey'
+EMAIL_HOST_USER = 'apikey'  # This is exactly the value 'apikey'
 EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -89,7 +92,6 @@ DEFAULT_FROM_EMAIL = 'lokopetrarque2003@gmail.com'
 KKIAPAY_PUBLIC_KEY = os.getenv('KKIAPAY_PUBLIC_KEY')
 KKIAPAY_PRIVATE_KEY = os.getenv('KKIAPAY_PRIVATE_KEY')
 KKIAPAY_SECRET = os.getenv('KKIAPAY_SECRET')
-SECRE_KEY = os.getenv('SECRE_KEY')
 
 LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'home'
