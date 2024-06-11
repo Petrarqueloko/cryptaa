@@ -9,8 +9,6 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 STATIC_URL = 'static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -80,8 +78,10 @@ DATABASES = {
 }
 
 
-
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'Authentification.backends.EmailBackend',  # Ajouter cette ligne
+]
 
 # Email configuration
 EMAIL_HOST = 'smtp.sendgrid.net'
