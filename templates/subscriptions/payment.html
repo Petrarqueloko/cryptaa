@@ -32,7 +32,7 @@
                     position="center"
                     sandbox="true"
                     data=""
-                    callback="http://127.0.0.1:8000/Abonnement/payment_callback">  
+                    callback="{% url "payment_callback" %}">  
                 </kkiapay-widget>
                 <script src="https://cdn.kkiapay.me/k.js"></script>
             </div>
