@@ -80,10 +80,7 @@ DATABASES = {
 }
 
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'Authentification.backends.EmailBackend',  # Ajouter cette ligne
-]
+
 
 
 # Email configuration
