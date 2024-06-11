@@ -9,16 +9,6 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = ['static']
-
-# Dossier où Django collectera tous les fichiers statiques
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Dossiers où vous placez vos fichiers statiques pour les applications
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
 
 # Secret Key
@@ -52,8 +42,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 ROOT_URLCONF = 'ProjetWeb.urls'
