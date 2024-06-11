@@ -10,14 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-# Media files (Uploads)
-# Configurations pour les fichiers médias
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Secret Key
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
