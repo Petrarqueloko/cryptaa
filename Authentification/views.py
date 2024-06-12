@@ -25,7 +25,7 @@ from django.contrib.auth import logout as auth_logout
 from django.utils.http import urlsafe_base64_decode
 from django.core.signing import SignatureExpired, BadSignature
 from django.views.generic.edit import FormView
-
+from django.views.decorators.csrf import csrf_exempt
 from Abonnement.models import Abonnement
 from .forms import SignUpForm, SignInForm, UpdateForm
 from django.contrib.auth.models import User
@@ -37,6 +37,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 import os
+from django.utils.decorators import method_decorator
 from sendgrid import SendGridAPIClient
 from .tokens import account_activation_token
 from datetime import timedelta
@@ -147,7 +148,7 @@ def home(request):
 
 
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class SignInView(View):
     template_name = 'Authentification/login.html'
 
@@ -155,22 +156,63 @@ class SignInView(View):
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, username=email, password=password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('profile')  # Redirige vers la page de profil
-            else:
-                messages.error(request, "Ce compte est désactivé.")
+        if request.content_type == 'application/json':
+            return self.api_login(request)
         else:
-            messages.error(request, "Email ou mot de passe incorrect.")
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
 
-        return render(request, self.template_name)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('profile')
+                else:
+                    messages.error(request, "Ce compte est désactivé.")
+            else:
+                messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
 
+            return render(request, self.template_name)
 
+    def api_login(self, request):
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_active:
+            try:
+                encryption_keys = Encryption_Cle.objects.filter(user=user).order_by('-date_creation')
+                keys_data = []
+                salt = os.urandom(16)
+                sym_key = derive_key(settings.SECRE_KEY, salt)
+                for key in encryption_keys:
+                    private_key = decrypt_data(key.cle_privee_rsa, sym_key)
+                    keys_data.append({
+                        'public_key': key.cle_publique_rsa.decode('utf-8'),
+                        'private_key': private_key.decode('utf-8'),
+                        'date_creation': key.date_creation.isoformat(),
+                        'date_expiration': key.date_expiration.isoformat()
+                    })
+
+                response_data = {
+                    'username': user.username,
+                    'email': user.email,
+                    'keys': keys_data,
+                    'password_hash': user.password,
+                }
+
+                self.save_credentials_locally(response_data)
+                return JsonResponse(response_data, status=200)
+            except Encryption_Cle.DoesNotExist:
+                return JsonResponse({'error': 'Clés de chiffrement non trouvées.'}, status=404)
+        else:
+            return JsonResponse({'error': 'Identifiants invalides ou compte inactif.'}, status=400)
+
+    def save_credentials_locally(self, data):
+        credentials_path = os.path.expanduser('~/.local/credentials.json')
+        os.makedirs(os.path.dirname(credentials_path), exist_ok=True)
+        with open(credentials_path, 'w') as f:
+            json.dump(data, f)
 
 
 @login_required
