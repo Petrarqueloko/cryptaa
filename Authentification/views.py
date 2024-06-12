@@ -159,9 +159,9 @@ class SignInView(View):
         if request.content_type == 'application/json':
             return self.api_login(request)
         else:
-            username = request.POST.get('username')
+            email = request.POST.get('email')
             password = request.POST.get('password')
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=email, password=password)
 
             if user is not None:
                 if user.is_active:
@@ -170,15 +170,15 @@ class SignInView(View):
                 else:
                     messages.error(request, "Ce compte est désactivé.")
             else:
-                messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
+                messages.error(request, "Email ou mot de passe incorrect.")
 
             return render(request, self.template_name)
 
     def api_login(self, request):
         data = json.loads(request.body)
-        username = data.get('username')
+        email = data.get('email')
         password = data.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=email, password=password)
         if user is not None and user.is_active:
             try:
                 encryption_keys = Encryption_Cle.objects.filter(user=user).order_by('-date_creation')
@@ -201,6 +201,7 @@ class SignInView(View):
                     'password_hash': user.password,
                 }
 
+                # Enregistrer les informations localement
                 self.save_credentials_locally(response_data)
                 return JsonResponse(response_data, status=200)
             except Encryption_Cle.DoesNotExist:
