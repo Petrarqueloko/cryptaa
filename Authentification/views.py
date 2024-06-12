@@ -108,7 +108,6 @@ def update_info(request):
 
 
 import logging
-
 logger = logging.getLogger(__name__)
 
 def activate(request, uidb64, token):
@@ -214,9 +213,9 @@ def update_keys(request):
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         )
 
-        # Dériver une clé symétrique à partir de SECRET_KEY
+        # Dériver une clé symétrique à partir de SECRE_KEY
         salt = os.urandom(16)  # Générer un sel pour la dérivation de clé
-        key = derive_key(settings.SECRET_KEY, salt)
+        key = derive_key(settings.SECRE_KEY, salt)
 
         # Chiffrer la clé privée
         encrypted_private_key = encrypt_data(private_key_bytes, key)
@@ -288,7 +287,7 @@ class SignUpView(FormView):
     
 
         
-# Fonction pour dériver une clé symétrique à partir de SECRET_KEY
+# Fonction pour dériver une clé symétrique à partir de SECRE_KEY
 def derive_key(secret_key, salt):
     kdf = Scrypt(
         salt=salt,
@@ -350,9 +349,9 @@ def activate_account(request, uidb64, token):
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         )
 
-        # Dériver une clé symétrique à partir de SECRET_KEY
+        # Dériver une clé symétrique à partir de SECRE_KEY
         salt = os.urandom(16)  # Générer un sel pour la dérivation de clé
-        key = derive_key(settings.SECRET_KEY, salt)
+        key = derive_key(settings.SECRE_KEY, salt)
 
         # Chiffrer la clé privée
         encrypted_private_key = encrypt_data(private_key_bytes, key)
