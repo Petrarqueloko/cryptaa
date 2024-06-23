@@ -28,5 +28,6 @@ class SignInForm(forms.Form):
     email = forms.EmailField(max_length=254, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True, min_length=8)
     
+
     
     

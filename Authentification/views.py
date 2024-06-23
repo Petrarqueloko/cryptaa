@@ -25,7 +25,7 @@ from django.contrib.auth import logout as auth_logout
 from django.utils.http import urlsafe_base64_decode
 from django.core.signing import SignatureExpired, BadSignature
 from django.views.generic.edit import FormView
-from django.views.decorators.csrf import csrf_exempt
+
 from Abonnement.models import Abonnement
 from .forms import SignUpForm, SignInForm, UpdateForm
 from django.contrib.auth.models import User
@@ -37,7 +37,6 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 import os
-from django.utils.decorators import method_decorator
 from sendgrid import SendGridAPIClient
 from .tokens import account_activation_token
 from datetime import timedelta
@@ -54,6 +53,53 @@ from django.http import JsonResponse, HttpResponse
 signer = TimestampSigner()
 
 
+
+
+# Fonction pour dériver une clé symétrique à partir de SECRE_KEY
+def derive_key(secret_key, salt):
+    kdf = Scrypt(
+        salt=salt,
+        length=32,
+        n=2**14,
+        r=8,
+        p=1,
+        backend=default_backend()
+    )
+    key = kdf.derive(secret_key.encode())
+    return key
+
+
+
+
+
+# Fonction pour chiffrer des données avec une clé symétrique
+def encrypt_data(data, key):
+    iv = os.urandom(16)  # Générer un vecteur d'initialisation (IV)
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+    encryptor = cipher.encryptor()
+    encrypted_data = encryptor.update(data) + encryptor.finalize()
+    return iv + encrypted_data  # Préfixer le IV pour le stockage
+
+
+
+
+
+
+# Fonction pour déchiffrer des données avec une clé symétrique
+def decrypt_data(encrypted_data, key):
+    iv = encrypted_data[:16]  # Extraire le IV préfixé
+    encrypted_data = encrypted_data[16:]
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+    decryptor = cipher.decryptor()
+    decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
+    return decrypted_data
+
+
+
+
+
+
+
 @login_required
 def verify_password(request):
     if request.method == 'POST':
@@ -65,6 +111,10 @@ def verify_password(request):
         else:
             return render(request, 'Authentification/verify_password.html', {'error': 'Invalid password'})
     return render(request, 'Authentification/verify_password.html')
+
+
+
+
 
 
 
@@ -108,7 +158,12 @@ def update_info(request):
 
 
 
+
+
+
+
 import logging
+
 logger = logging.getLogger(__name__)
 
 def activate(request, uidb64, token):
@@ -138,9 +193,16 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 
+
+
+
+
 @login_required
 def dashboard(request):
     return render(request, 'Authentification/dashboard.html')
+
+
+
 
 
 def home(request):
@@ -148,7 +210,8 @@ def home(request):
 
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+
+
 class SignInView(View):
     template_name = 'Authentification/login.html'
 
@@ -156,64 +219,25 @@ class SignInView(View):
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        if request.content_type == 'application/json':
-            return self.api_login(request)
-        else:
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            user = authenticate(request, username=email, password=password)
-
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('profile')
-                else:
-                    messages.error(request, "Ce compte est désactivé.")
-            else:
-                messages.error(request, "Email ou mot de passe incorrect.")
-
-            return render(request, self.template_name)
-
-    def api_login(self, request):
-        data = json.loads(request.body)
-        email = data.get('email')
-        password = data.get('password')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
         user = authenticate(request, username=email, password=password)
-        if user is not None and user.is_active:
-            try:
-                encryption_keys = Encryption_Cle.objects.filter(user=user).order_by('-date_creation')
-                keys_data = []
-                salt = os.urandom(16)
-                sym_key = derive_key(settings.SECRE_KEY, salt)
-                for key in encryption_keys:
-                    private_key = decrypt_data(key.cle_privee_rsa, sym_key)
-                    keys_data.append({
-                        'public_key': key.cle_publique_rsa.decode('utf-8'),
-                        'private_key': private_key.decode('utf-8'),
-                        'date_creation': key.date_creation.isoformat(),
-                        'date_expiration': key.date_expiration.isoformat()
-                    })
 
-                response_data = {
-                    'username': user.username,
-                    'email': user.email,
-                    'keys': keys_data,
-                    'password_hash': user.password,
-                }
-
-                # Enregistrer les informations localement
-                self.save_credentials_locally(response_data)
-                return JsonResponse(response_data, status=200)
-            except Encryption_Cle.DoesNotExist:
-                return JsonResponse({'error': 'Clés de chiffrement non trouvées.'}, status=404)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('profile')  # Redirige vers la page de profil
+            else:
+                messages.error(request, "Ce compte est désactivé.")
         else:
-            return JsonResponse({'error': 'Identifiants invalides ou compte inactif.'}, status=400)
+            messages.error(request, "Email ou mot de passe incorrect.")
 
-    def save_credentials_locally(self, data):
-        credentials_path = os.path.expanduser('~/.local/credentials.json')
-        os.makedirs(os.path.dirname(credentials_path), exist_ok=True)
-        with open(credentials_path, 'w') as f:
-            json.dump(data, f)
+        return render(request, self.template_name)
+
+
+
+
+
 
 
 @login_required
@@ -229,23 +253,24 @@ def profile(request):
     })
 
 
-@login_required
+
+
+
+import base64
+
 def update_keys(request):
     user = request.user
     active_subscription = Abonnement.objects.filter(user=user, date_expiration__gte=timezone.now()).exists()
-    
+
     if not active_subscription:
-        return render(request, 'Authentification/profile.html', {'error': 'Vous n\'avez pas un abonnement actif.'})
-    
+        return render(request, 'Authentification/profile.html', {'error': "Vous n'avez pas un abonnement actif."})
+
     if request.method == 'POST':
-        # Générer les clés RSA
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048
-        )
+        # Générer une paire de clés RSA
+        private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         public_key = private_key.public_key()
 
-        # Sérialiser les clés en format PEM
+        # Sérialiser les clés au format PEM
         private_key_bytes = private_key.private_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.PKCS8,
@@ -256,21 +281,26 @@ def update_keys(request):
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         )
 
-        # Dériver une clé symétrique à partir de SECRE_KEY
-        salt = os.urandom(16)  # Générer un sel pour la dérivation de clé
-        key = derive_key(settings.SECRE_KEY, salt)
+        # Générer un sel pour la dérivation de clé
+        salt = os.urandom(16)
+        key = derive_key(settings.SECRE_KEY, salt)  # Dériver la clé symétrique
 
         # Chiffrer la clé privée
         encrypted_private_key = encrypt_data(private_key_bytes, key)
 
-        # Définir la date de création et d'expiration
+        # Encoder en base64 pour stockage
+        encrypted_private_key_base64 = base64.b64encode(encrypted_private_key).decode('utf-8')
+        public_key_base64 = base64.b64encode(public_key_bytes).decode('utf-8')
+        salt_base64 = base64.b64encode(salt).decode('utf-8')
+
         date_creation = timezone.now()
         date_expiration = date_creation + timedelta(days=90)
 
-        # Enregistrer la nouvelle paire de clés dans la table Encryption_Cle sans remplacer l'ancienne
+        # Enregistrer les clés et le sel dans la base de données
         encryption_cle = Encryption_Cle.objects.create(
-            cle_privee_rsa=encrypted_private_key,
-            cle_publique_rsa=public_key_bytes,
+            cle_privee_rsa=encrypted_private_key_base64,
+            cle_publique_rsa=public_key_base64,
+            salt=salt_base64,
             date_creation=date_creation,
             date_expiration=date_expiration,
             user=user
@@ -281,9 +311,18 @@ def update_keys(request):
 
     return render(request, 'Authentification/profile.html', {'active_subscription': active_subscription})
 
+
+
+
 @login_required
 def update_keys_success(request):
     return render(request, 'Authentification/update_keys_success.html')
+
+
+
+
+
+
 
 
 class SignUpView(FormView):
@@ -329,56 +368,22 @@ class SignUpView(FormView):
     
     
 
-        
-# Fonction pour dériver une clé symétrique à partir de SECRE_KEY
-def derive_key(secret_key, salt):
-    kdf = Scrypt(
-        salt=salt,
-        length=32,
-        n=2**14,
-        r=8,
-        p=1,
-        backend=default_backend()
-    )
-    key = kdf.derive(secret_key.encode())
-    return key
 
-def encrypt_data(data, key):
-    # Générer un vecteur d'initialisation (IV)
-    iv = os.urandom(16)
-    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
-    encryptor = cipher.encryptor()
-    encrypted_data = encryptor.update(data) + encryptor.finalize()
-    return iv + encrypted_data  # Préfixer le IV pour le stockage
 
-def decrypt_data(encrypted_data, key):
-    iv = encrypted_data[:16]
-    encrypted_data = encrypted_data[16:]
-    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
-    decryptor = cipher.decryptor()
-    decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
-    return decrypted_data
 
 def activate_account(request, uidb64, token):
     try:
-        # Décoder l'UID à partir de l'URL
         uid = force_str(urlsafe_base64_decode(uidb64))
-        # Obtenir l'utilisateur correspondant
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    # Vérifier si l'utilisateur existe et si le token est valide
     if user is not None and default_token_generator.check_token(user, token):
-        # Activer l'utilisateur
         user.is_active = True
         user.save()
 
-        # Générer les clés RSA
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048
-        )
+        # Générer une paire de clés RSA
+        private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         public_key = private_key.public_key()
 
         # Sérialiser les clés en format PEM
@@ -392,12 +397,17 @@ def activate_account(request, uidb64, token):
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         )
 
-        # Dériver une clé symétrique à partir de SECRE_KEY
-        salt = os.urandom(16)  # Générer un sel pour la dérivation de clé
+        # Générer un sel pour la dérivation de clé
+        salt = os.urandom(16)
         key = derive_key(settings.SECRE_KEY, salt)
 
         # Chiffrer la clé privée
         encrypted_private_key = encrypt_data(private_key_bytes, key)
+
+        # Encoder en base64 pour stockage
+        encrypted_private_key_base64 = base64.b64encode(encrypted_private_key).decode('utf-8')
+        public_key_base64 = base64.b64encode(public_key_bytes).decode('utf-8')
+        salt_base64 = base64.b64encode(salt).decode('utf-8')
 
         # Définir la date de création et d'expiration
         date_creation = timezone.now()
@@ -405,17 +415,20 @@ def activate_account(request, uidb64, token):
 
         # Enregistrer les clés dans la table Encryption_Cle
         encryption_cle = Encryption_Cle.objects.create(
-            cle_privee_rsa=encrypted_private_key,
-            cle_publique_rsa=public_key_bytes,
+            cle_privee_rsa=encrypted_private_key_base64,
+            cle_publique_rsa=public_key_base64,
+            salt=salt_base64,
             date_creation=date_creation,
             date_expiration=date_expiration,
             user=user
         )
         encryption_cle.save()
-    
+
         return HttpResponse("Votre compte a été activé avec succès!")
     else:
         return HttpResponse("Le lien d'activation est invalide ou a expiré!")
+
+
 
 
 

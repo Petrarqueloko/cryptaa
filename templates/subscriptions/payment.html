@@ -21,7 +21,7 @@
 </head>
 <body>
     {% include "header.html" %}
-    <div class="container" style="margin-top: 200px;">
+    <div class="container">
         <div class="card shadow">
             <div class="card-header bg-success text-white text-center">
                 <h3 class="card-title">Complete Your Payment</h3>
@@ -32,7 +32,7 @@
                     position="center"
                     sandbox="true"
                     data=""
-                    callback="https://cryptas.onrender.com/Abonnement/payment_callback">  
+                    callback="http://127.0.0.1:8000/Abonnement/payment_callback">  
                 </kkiapay-widget>
                 <script src="https://cdn.kkiapay.me/k.js"></script>
             </div>

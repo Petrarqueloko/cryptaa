@@ -63,7 +63,7 @@
                 </div>
                 <ul id="menu2-submenu" class="submenu">
                     <li class="nav-item"><a class="nav-link text-dark" href="{% url "encrypt_file" %}">Chiffrement de fichiers </a></li>
-                    <li class="nav-item"><a class="nav-link text-dark" href="">Chiffrement de dossiers</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="{% url "encrypt_folder" %}">Chiffrement de dossiers</a></li>
                 </ul>
             </li>
             <li class="nav-item">
@@ -72,8 +72,8 @@
                     <a class="nav-link text-dark" href="javascript:void(0);">Déchiffrement</a>
                 </div>
                 <ul id="menu3-submenu" class="submenu">
-                    <li class="nav-item"><a class="nav-link text-dark" href="">Déchiffrement de fichiers</a></li>
-                    <li class="nav-item"><a class="nav-link text-dark" href="">Déchiffrement de dossiers</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="{% url "decrypt_file" %}">Déchiffrement de fichiers</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="{% url "decrypt_folder" %}">Déchiffrement de dossiers</a></li>
                 </ul>
             </li>
             <li class="nav-item">

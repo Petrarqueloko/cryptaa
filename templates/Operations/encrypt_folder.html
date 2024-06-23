@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decrypt File</title>
+    <title>Encrypt Folder</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
@@ -33,7 +33,7 @@
             width: 100%;
         }
         .custom-file-label::after {
-            content: "Choose file";
+            content: "Choose folder";
             background: #007bff;
             color: white;
             padding: 0.375rem 0.75rem;
@@ -46,27 +46,28 @@
             font-weight: 900;
             padding-right: 10px;
         }
-        .btn-primary .fa-unlock {
+        .btn-primary .fa-lock {
             margin-right: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center text-info">Upload and Decrypt File</h2>
+        <h2 class="text-center text-info">Upload and Encrypt Folder</h2>
         <div class="card">
             <div class="card-body">
-                <form id="file-upload-form" method="post" enctype="multipart/form-data" action="{% url 'decrypt_file' %}">
+                <form id="folder-upload-form" method="post" enctype="multipart/form-data" action="{% url 'encrypt_folder' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="file"><h5>Select the file you want to decrypt</h5></label>
+                        <label for="folder"><h5>Select the folder you want to encrypt</h5></label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file" name="file" required>
-                            <label class="custom-file-label" for="file">Choose file</label>
+                            <input type="file" class="custom-file-input" id="folder" name="folder" webkitdirectory multiple required>
+                            <label class="custom-file-label" for="folder">Choose folder</label>
                         </div>
+                        <input type="hidden" id="original_folder_name" name="original_folder_name">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-unlock"></i> Decrypt
+                        <i class="fas fa-lock"></i> Encrypt
                     </button>
                 </form>
                 <div id="progress-bar" class="mt-3">
@@ -83,31 +84,40 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('file-upload-form');
+            const form = document.getElementById('folder-upload-form');
             const progressBar = document.getElementById('progress-bar');
             const progress = document.getElementById('progress');
             const progressText = document.getElementById('progress-text');
             const result = document.getElementById('result');
-            const fileInput = document.getElementById('file');
-            const fileLabel = document.querySelector('.custom-file-label');
+            const folderInput = document.getElementById('folder');
+            const folderLabel = document.querySelector('.custom-file-label');
+            const originalFolderNameInput = document.getElementById('original_folder_name');
 
-            fileInput.addEventListener('change', function() {
-                const fileName = this.files[0].name;
-                fileLabel.textContent = fileName;
+            folderInput.addEventListener('change', function() {
+                const fileNames = Array.from(this.files).map(file => file.webkitRelativePath.split('/')[0]);
+                const uniqueFolderNames = [...new Set(fileNames)];
+                folderLabel.textContent = uniqueFolderNames.join(', ');
+                if (uniqueFolderNames.length > 0) {
+                    originalFolderNameInput.value = uniqueFolderNames[0];
+                }
             });
 
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
 
-                if (fileInput.files.length === 0) {
-                    result.innerHTML = '<p>Please select a file to upload.</p>';
+                if (folderInput.files.length === 0) {
+                    result.innerHTML = '<p>Please select a folder to upload.</p>';
                     return;
                 }
 
-                const file = fileInput.files[0];
+                const files = folderInput.files;
 
                 const formData = new FormData();
-                formData.append('file', file);
+                for (const file of files) {
+                    formData.append('folder', file, file.webkitRelativePath);
+                }
+
+                formData.append('original_folder_name', originalFolderNameInput.value);
 
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', form.action, true);
@@ -125,15 +135,14 @@
                 xhr.addEventListener('load', function() {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
-                        const decryptedFileUrl = response.decrypted_file_path;
-                        result.innerHTML = '<p>File decrypted successfully. <a id="download-link" href="' + decryptedFileUrl + '" download="' + file.name.replace('.enc', '') + '">Click here to download the decrypted file.</a></p>';
+                        result.innerHTML = '<p>Folder encrypted successfully. <a href="' + response.encrypted_file_path + '">Download encrypted file</a></p>';
                     } else {
                         result.innerHTML = '<p>Error: ' + JSON.parse(xhr.responseText).error + '</p>';
                     }
                 });
 
                 xhr.addEventListener('error', function() {
-                    result.innerHTML = '<p>An error occurred while uploading the file.</p>';
+                    result.innerHTML = '<p>An error occurred while uploading the folder.</p>';
                     progressBar.style.display = 'none';
                 });
 
